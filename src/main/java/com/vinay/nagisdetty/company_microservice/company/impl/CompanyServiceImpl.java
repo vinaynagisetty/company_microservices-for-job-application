@@ -5,6 +5,7 @@ package com.vinay.nagisdetty.company_microservice.company.impl;
 import com.vinay.nagisdetty.company_microservice.company.Company;
 import com.vinay.nagisdetty.company_microservice.company.CompanyRepository;
 import com.vinay.nagisdetty.company_microservice.company.CompanyService;
+import com.vinay.nagisdetty.company_microservice.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,6 +56,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company getCompanyById(Long id) {
         return companyRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateCompanyRating(ReviewMessage reviewMessage) {
+        System.out.println(reviewMessage.getTitle());
+
     }
 
 }
