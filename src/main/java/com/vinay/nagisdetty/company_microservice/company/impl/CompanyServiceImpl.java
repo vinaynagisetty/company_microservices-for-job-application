@@ -5,6 +5,7 @@ package com.vinay.nagisdetty.company_microservice.company.impl;
 import com.vinay.nagisdetty.company_microservice.company.Company;
 import com.vinay.nagisdetty.company_microservice.company.CompanyRepository;
 import com.vinay.nagisdetty.company_microservice.company.CompanyService;
+import com.vinay.nagisdetty.company_microservice.company.clients.ReviewClients;
 import com.vinay.nagisdetty.company_microservice.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import java.util.Optional;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private CompanyRepository companyRepository;
+    private ReviewClients reviewClients;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ReviewClients reviewClients) {
         this.companyRepository = companyRepository;
+        this.reviewClients = reviewClients;
     }
 
     @Override
@@ -61,6 +64,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void updateCompanyRating(ReviewMessage reviewMessage) {
         System.out.println(reviewMessage.getTitle());
+        Company company = companyRepository.findById(reviewMessage.getCompanyId()).orElse(null);
+        Double averageRating = reviewClients.getAverageRating(reviewMessage.getCompanyId());
+
+        if (company != null) {
+            company.setRating(averageRating);
+            companyRepository.save(company);
+        }
 
     }
 
